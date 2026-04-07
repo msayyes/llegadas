@@ -248,7 +248,11 @@ def recolectar_valenciaport_pcs():
         for b_id in llegadas_activas_ids:
             if b_id not in buques_escrapeados_hoy:
                 requests.patch(f"{SUPABASE_URL}/rest/v1/llegadas_valencia?buque_id=eq.{b_id}", headers=HEADERS, json={"estado_actual": "TERMINADO"})
-                requests.patch(f"{SUPABASE_URL}/rest/v1/buques?id=eq.{b_id}", headers=HEADERS, json={"ultima_visita": ahora_utc[:10]})
+                requests.patch(f"{SUPABASE_URL}/rest/v1/buques?id=eq.{b_id}", headers=HEADERS, json={
+    "ultima_visita": ahora_utc[:10],
+    "destino_declarado": None,   # limpia el destino al zarpar
+    "eta_declarada": None        # limpia la ETA al zarpar
+})
                 barcos_zarpados += 1
         
         print(f"👋 {barcos_zarpados} barcos han zarpado. Historial actualizado.")
