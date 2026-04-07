@@ -1,0 +1,16 @@
+name: Actualizar ETAs Puerto
+on:
+  schedule:
+    - cron: '0 6,12,18 * * *' # 3 veces al día
+  workflow_dispatch:
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install requests playwright
+      - run: playwright install --with-deps chromium
+      - run: python bot_llegadas.py
